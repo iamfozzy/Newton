@@ -1,0 +1,18 @@
+#This file is merged into the configurations after all other configurations have been loaded. Here you should place your site changes.
+production:
+    newton:
+        url:    http://nt.stu.gw
+        theme:  example
+
+        
+staging:
+
+    _extends: production
+
+    newton:
+        dbname: newton_test
+        url:    http://newton.vega.gravitywell.eu
+
+development:
+    
+    _extends: production

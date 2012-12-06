@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Newton <?php echo (!empty($this->title) ? ' - ' . $this->title : '')?></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <script type="text/javascript">
+        var ADMINURL        = CMSURL = "<?php echo URL::toAdmin() ?>";
+        var THEMEURL        = "<?php echo URL::toThemeAsset() ?>";
+        var FILEMANAGERURL  = "<?php echo URL::route(array('controller' => 'files', 'action' => 'embed'), 'admin.core')?>";
+    </script>
+    
+    <?php
+        // Add a bunch of default assets
+        Asset::theme('jquery', 'js/jquery/jquery.min.js');
+        Asset::theme('jquery.tokeninpurt', 'js/jquery/jquery.tokeninput.js');
+        Asset::theme('jquery.validate', 'js/jquery/jquery.validate.js');
+        Asset::theme('jquery.cookie', 'js/jquery/jquery.cookie.js');
+
+        Asset::theme('tinymce', 'tinymce/jquery.tinymce.js');
+        Asset::theme('tinymce.init', 'tinymce/init.js');
+
+        Asset::theme('bootstrap.js', 'bootstrap/js/bootstrap.min.js');
+        Asset::theme('bootbox.js', 'bootstrap/js/bootbox.min.js');
+        Asset::theme('bootstrap.css', 'bootstrap/css/bootstrap.min.css');
+
+        Asset::theme('colorbox.js', 'colorbox/jquery.colorbox.min.js');
+        Asset::theme('colobox.css', 'colorbox/colorbox.css');
+
+        Asset::theme('datatables.bootstrap.css', 'datatables/css/datatables_bootstrap.css');
+        Asset::theme('datatables.js', 'datatables/js/jquery.dataTables.min.js');
+        Asset::theme('datatables.bootstrap.js', 'datatables/js/dataTables.js');
+
+
+        Asset::theme('newton.js', 'js/newton.js');
+        Asset::theme('newton.css', 'css/newton.css');
+
+        // Now, output the assets and themes
+        echo Asset::styles(); 
+        echo Asset::scripts();
+    ?>
+
+    <!-- Favicon -->
+    <link rel="icon" href="<?php echo URL::toThemeAsset('favicon.ico') ?>" type="image/x-icon"> 
+    <link rel="shortcut icon" href="<?php echo URL::toThemeAsset('favicon.ico') ?>" type="image/x-icon"> 
+</head>
+<body>
+
+    <div class="navbar navbar-fixed-top navbar-inverse"> 
+        <div class="navbar-inner"> 
+            <div class="container"> 
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> 
+                <span class="icon-bar"></span> 
+                    <span class="icon-bar"></span> 
+                    <span class="icon-bar"></span> 
+                </a> 
+                <a class="brand" href="<?php echo URL::route(array(), 'admin.default');?>">Newton</a> 
+                <div class="nav-collapse">    
+                <ul class="nav"> 
+                    <li><a href="<?php echo URL::route(array(), 'admin.default', true)?>">Dasboard</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Content <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <?php /*<li>
+                                <a href="<?php echo URL::route(array(), 'admin.content', true)?>">
+                                    Manage All Content
+                                </a>
+                            </li>
+                            <li class="divider"></li>*/?>
+                            <li><a href="<?php echo URL::route(array('controller' => 'item', 'action' => 'index', 'is_page'  => true, 'type' => null), 'admin.content');?>">Manage Pages</a></li>
+                            <li class="divider"></li>
+                            <?php foreach(TypeManager::getInstance()->getTypes() as $type) : ?>
+                                <?php if($type->getIsPage()) { continue; } ?>
+                                <?php $a = URL::route(array('controller' => 'item', 'action' => 'index', 'type'  => $type->getName(), 'is_page' => $type->getIsPage()), 'admin.content'); ?>
+                                <li><a href="<?php echo $a?>">
+                                    <?php echo $type->getPluralLabel(); ?>
+                                </a></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </li> 
+                    <li><a href="<?php echo URL::route(array('controller'  => 'files'), 'admin.core', true) ?>">Manage Files</a></li> 
+                </ul> 
+                <ul class="nav navbar-text pull-right">
+                    
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Settings <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="<?php echo URL::route(array('controller' => 'sitesettings'), 'admin.core', true);?>">Edit Site Settings</a></li>
+                        </ul>
+                    </li>
+                    <?php /*
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <!--<li class="nav-header">Logged in as Stuart</li>-->
+                            <li><a href="#"><i class="icon-book"></i> &nbsp; Logout</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Help</a></li>
+                        </ul>
+                    </li>
+                     */?>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="<?php echo URL::toThemeAsset('img/flags/' . Lang::current() . '.png'); ?>" /> <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li class="nav-header">Switch Language</li>
+                            <?php foreach(Lang::fetchAllLanguages() as $lang) : ?>
+                            <li>
+                                <a href="<?php echo URL::route(array('controller' => 'lang', 'action' => 'switch', 'lang' => $lang->name), 'admin.core', true);?>">
+                                    <img src="<?php echo URL::toThemeAsset('img/flags/' . $lang->name . '.png'); ?>" /> &nbsp; 
+                                    <?php echo $lang->title; ?>
+                                </a>
+                            </li>
+                            <?php endforeach; ?><!--
+                            <li class="divider"></li>
+                            <li>
+                                <a href="<?php echo URL::route(array('controller' => 'site'), 'admin.core', true);?>">
+                                    Manage Languages
+                                </a>
+                            </li>-->
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo Site::findByName(Site::current())->title;?> <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li class="nav-header">Switch Site</li>
+                            <?php foreach(Site::fetchAllSites() as $site) : ?>
+                            <li>
+                                <a href="<?php echo URL::route(array('controller' => 'site', 'action' => 'switch', 'site' => $site->name), 'admin.core', true);?>">
+                                    <?php if($site->name == Site::current()) : ?>
+                                        <i class="icon-ok"></i> &nbsp;
+                                    <?php else: ?>
+                                        <i class="icon-none"></i> &nbsp;
+                                    <?php endif; ?>
+                                    <?php echo $site->title; ?>
+                                </a>
+                            </li><!--
+                            <?php endforeach; ?>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="<?php echo URL::route(array('controller' => 'site'), 'admin.core', true);?>">
+                                    Manage Sites
+                                </a>
+                            </li>-->
+                        </ul>
+                    </li>
+                </ul>
+                </div><!--/.nav-collapse --> 
+            </div> 
+        </div> 
+    </div> 
+ 
+    <div class="container"> 
+
+        <?php echo Session::getFlashMessages(); ?>
+        <?php echo $this->layout()->content; ?>
+
+    </div>
+</body>
+</html>  

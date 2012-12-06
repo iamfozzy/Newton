@@ -1,0 +1,1 @@
+The sub folders in each controllers directory relates to a param in the request object called 'frontendName'.

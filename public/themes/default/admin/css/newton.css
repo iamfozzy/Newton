@@ -1,0 +1,33 @@
+body {
+    padding-top: 70px;
+    font-size: 12px;
+}
+
+body h1 {
+    font-weight: normal !important;
+}
+
+textarea { width: 400px;}
+
+
+.container>h3 {
+    margin-bottom: 20px !important; 
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+#tree { width: 300px; margin-right: 16px; float: left; }
+
+/* Tabs */
+.nav-tabs > li > a {
+    background-color: #eee;
+    color: #666;
+    border-color: #EEE #EEE #DDD;
+}
+.nav-tabs > li > a:hover {
+    background-color: #ddd;
+    color: #000;
+    border-color: #EEE #EEE #DDD;
+}
+
+

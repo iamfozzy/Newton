@@ -1,0 +1,81 @@
+
+<div class="page-header">
+    
+    <div class="btn-group pull-right">
+        <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-pencil icon-white"></i> Create New Content</a>
+        <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <?php foreach(TypeManager::getInstance()->getTypes() as $type) : ?>
+            <?php if(!$type->getIsPage()) { continue; } ?>
+            <?php $url = URL::route(array(
+                'controller'    => 'item',
+                'action'        => 'add',
+                'type'          => $type->getName(),
+                'is_page'       => $type->getIsPage(),
+                'id'            => null
+            )); ?>
+            <li><a href="<?php echo $url?>"><?php echo $type->getLabel() ?></a></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+
+<h1>Pages <small>Create and manage your sites Pages</small></h1>
+
+</div>
+
+
+<div>
+    <table cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered">
+        <thead>
+            <tr> 
+                <th>Title</th>
+                <th>Type</th>
+                <th>Category</th>
+                <th>Url</th>
+                <th style="width: 70px;">&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($this->items as $item) : ?>
+            <?php
+                $data       = $item->getData();
+                $rewrite    = $item->getRewrite();
+                $type       = $item->getType();
+                $editUrl    = URL::route(array(
+                    'controller'    => 'item',
+                    'action'        => 'edit',
+                    'type'          => $type->getName(),
+                    'id'            => (string) $item->getId()
+                ));
+                $deleteUrl  = URL::route(array(
+                    'controller'    => 'item',
+                    'action'        => 'delete',
+                    'type'          => $type->getName(),
+                    'id'            => (string) $item->getId()
+                )); 
+            ?>
+            <tr> 
+                <td><?php echo $data->getTitle() ?></td>
+                <td><?php echo $type->getLabel() ?></td>
+                <td><?php echo ($data->getCategory()) ? $data->getCategory() : 'None' ; ?></td>
+                <td><?php echo $rewrite['url'] ?></td>
+                <td style="padding: 2px; text-align: center; width: 70px;">
+                    <a href="<?php echo $editUrl;?>" class="btn btn-primary btn-small" rel="tooltip" title="Edit" id="edit">
+                        <i class="icon-pencil icon-white"></i>
+                    </a>
+                    <a href="javascript:newton.modal.confirmDelete('<?php echo $deleteUrl; ?>');" class="btn btn-danger btn-small" rel="tooltip" title="Delete">
+                        <i class="icon-trash icon-white"></i>
+                    </a>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+
+    <script>
+    $.extend( $.fn.dataTableExt.oStdClasses, {
+        "sWrapper": "dataTables_wrapper form-inline"
+    });
+</script>
+
+</div>

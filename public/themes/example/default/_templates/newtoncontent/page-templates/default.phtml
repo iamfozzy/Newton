@@ -1,0 +1,10 @@
+Hello, this is overriden. Yeah!
+
+<pre>
+<?php var_dump($this->data->debug()); ?>
+
+
+<?php foreach(ContentItem::findContent('example-teammember', array('name'=> 1)) as $item) : ?>
+<?php var_dump($item->getData()->debug()); ?>
+<?php endforeach; ?>
+</pre>

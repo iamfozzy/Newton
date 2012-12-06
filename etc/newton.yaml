@@ -1,0 +1,77 @@
+production:
+
+    # Active theme
+    theme:                          example
+
+    # Default admin key. What key in the url denotes the Admin Frontend;
+    adminKey:                       admin
+    url:                            http://nt.stu.gw
+
+    # Database
+    dbname:                         nt
+
+    # Session. Default remember_me below is 1 week.
+    session:
+        name:                       Newton
+        remember_me_seconds:        604800  
+
+    # Should requests be routed through SSL?
+    ssl:                            true
+    encoding:                       UTF-8
+    timezone:                       Europe/London
+
+    language:
+        fallback:                   true
+
+    auth:
+        enabled:                    true
+
+    # Modules
+    modules:
+            enabled: 
+                # NewtonCore should always be here unless you're rewriting it!
+                NewtonCore:             BASE_MODULE_PATH/NewtonCore
+                NewtonAuth:             BASE_MODULE_PATH/NewtonAuth
+                NewtonUsers:            BASE_MODULE_PATH/NewtonUsers
+                NewtonContent:          BASE_MODULE_PATH/NewtonContent
+                NewtonTest:             BASE_MODULE_PATH/NewtonTest
+
+                ExampleModule:          LOCAL_MODULE_PATH/ExampleModule
+
+            default:                    NewtonCore
+
+    # Authentication Settings
+    auth:
+        roles:
+            guest:
+                name:   Guest
+            registered:
+                name:   Registered
+            subscriber:
+                name:   Subscriber
+            editor:
+                name:   Editor
+            admin: 
+                name:   Admin
+            superadmin:
+                name:   Super Admin
+            developer: 
+                name:   Developer
+
+
+        resources:
+            admin:              ['editor','admin','superadmin','developer']
+            admin-content:      ['editor','admin','superadmin','developer']
+            admin-settings:     ['admin','superadmin','developer']
+            admin-sites:        ['superadmin','developer']
+            admin-language:     ['superadmin','developer']
+
+
+staging:
+    _extends: production
+
+
+development:
+    _extends: production
+
+    ssl:                            false

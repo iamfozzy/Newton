@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+    <link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/smoothness/jquery-ui.css" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" ></script> 
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js"></script>
+
+    <?php
+        // Assets
+        if(@$_GET['editor'] == 'tiny') {
+             Asset::theme('tinymce.popup', 'tinymce/tiny_mce_popup.js');
+        }
+       
+        Asset::theme('elfinder.css', 'elfinder/css/elfinder.min.css');
+        Asset::theme('elfinder.js', 'elfinder/js/elfinder.min.js');
+        Asset::theme('elfinder.theme', 'elfinder/css/theme.css');
+
+        echo Asset::styles();
+        echo Asset::scripts();
+    ?>
+
+    <script type="text/javascript" charset="utf-8">
+    function getUrlVars() {
+        var map = {};
+        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+            map[key] = value;
+        });
+
+        return map;
+    };
+
+    $().ready(function() {
+        var elf = $('#elfinder').elfinder({
+            url : '<?php echo URL::toThemeAsset('elfinder/php/fj0309gjs09j309jfj022309jv089jhs972h.php')?>',
+            getFileCallback: function(url) {
+                
+                urlVars = getUrlVars();
+                elementId = urlVars['element'];
+
+                switch(urlVars['editor']) {
+                    case 'custom' :
+
+                        parent.newton.filemanager.selectFile(url, elementId);
+                        parent.$.colorbox.close()
+                        break;
+
+                    case 'tiny' :
+                        var win = tinyMCEPopup.getWindowArg('window');
+
+                        // pass selected file path to TinyMCE
+                        win.document.getElementById(tinyMCEPopup.getWindowArg('input')).value = url;
+
+                        // are we an image browser?
+                        if (typeof(win.ImageDialog) != 'undefined') {
+                        
+                            // update image dimensions
+                            if (win.ImageDialog.getImageData) {
+                                win.ImageDialog.getImageData();
+                            }
+                        
+                            // update preview if necessary
+                            if (win.ImageDialog.showPreviewImage) {
+                                win.ImageDialog.showPreviewImage(url);
+                            }
+                        }
+
+                        // close popup window
+                        tinyMCEPopup.close();
+
+                        break;
+                    default:
+                        break;
+                }
+            },
+
+            height: 530,
+            resizable: false,
+        }).elfinder('instance');
+    });
+    </script>
+
+</html>
+<body <?php echo (!isset($_GET['editor'])) ? 'style="margin: 0;"' : ''; ?>>
+<div id="elfinder"></div>
+</body>
+</html>

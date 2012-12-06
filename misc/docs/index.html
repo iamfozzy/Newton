@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<style type="text/css">
+body {
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 11px;
+	background-color: #1E1E1E;
+	color: #eee;
+	padding: 20px;
+}
+a {color: orange; }
+h1 {
+	padding-bottom: 5px;
+	border-bottom: 1px solid #333;
+}
+
+h2, h3, h4, h5 {
+	margin-top: 25px;
+	color: orange;
+}
+</style>
+</head>
+
+<body>
+<h1>Newton</h1>
+<h2>Prerequisits</h2>
+<p>Newton requires the following server requirements:</p>
+<ul>
+  <li>PHP 5.3+</li>
+  <li>MongoDB (and a good mongo admin tool. We use RockMongo:   <a href="http://rockmongo.com/">http://rockmongo.com</a>)</li>
+  <li>Apache 2+</li>
+</ul>
+<p>Also, an understanding of the following will prove useful:</p>
+<ul>
+  <li>PHP 5.3 Namespaces</li>
+  <li>Zend Framework Dispatch Process (Newton is very similar, but doesn't use Zend_Application or any of the Bootstrap functionality. An understanding of the Dispatch process though will be useful (see Zend_Controller_Front::dispatch()).</li>
+</ul>
+<p>Please note is that Newton is not finished. The best way to understand Newton is to get it installed (very easy) and to follow the application flow process down to the module, controller and action responsible for the Request.</p>
+<h2>Installation</h2>
+<ul>
+  <li>Ensure you have MongoDb and PHP 5.3+ working. </li>
+  <li>Extract the contents of the Zip file to a location</li>
+  <li>Ensure the storage and its sub-directories are writable by the server</li>
+  <li>Setup an apache VirtualHost to point to the public directory of the extracted files (like Zend Framework) (I'm going to call the domain for  this example.local)</li>
+  <li>Open the file etc/newton.yaml and change the values for theme, dbname and url.</li>
+  <li>Look at the modules.enabled, this is the modules that have been enabled and the path to where the module is stored.</li>
+  <li>Database collections should be automatically created. You shouldn't have to worry about this.</li>
+</ul>
+<p>Now you have setup Newton...</p>
+<ul>
+  <li> Goto http://example.local, it should have some error in there. This is because it is looking for a piece of content with the url of 'home'.</li>
+  <li>Goto http://example.local/admin, click the Content dropdown, Click 'Manage Pages'. Click create new content. choose 'Default Page'. Called the title 'Home' and press save. Now refresh the frontend and it should be different.</li>
+  <li>Play around with it, keep note of the URLS (always useful, helps you track the module/controller/action</li>
+</ul>
+<h2>Directory Structure</h2>
+<p><img src="images/ds.png" width="960" height="1261" /></p>
+<h2>Overview</h2>
+<p>Newton is based on Zend Framework components. A Zend Framework Application consists of the following:</p>
+<ul>
+  <li>Zend_Application (This is not used in Newton, this is replaced with Newton\Kernel and Newton\Module\Manager</li>
+  <li>Front Controller</li>
+  <li>Router</li>
+  <li>Request</li>
+  <li>Dispatcher</li>
+  <li>Response</li>
+</ul>
+<p>In Newton, instead of using Zend_Application to create a new Application, this functionality has been replaced by Newton\Kernel and Newton\Module\Manager. Modules are loaded by Newton\Module\Manager which is initialised so early that Modules hook into Event hooks to modify the application process (adding routes, changing the active site/language, adding content types etc...).</p>
+<p>Dispatch Process</p>
+<p>The best way to learn Newton is to know the process in which an action is dispatched. So..</p>
+<ul>
+<li>Firstly, lets open public/index.php and look in here. You'll see the environment is set, we require Newton\Kernel and run initWeb();</li>
+<li>Open up code/vendor/Newton/Kernel.php. Take a look through here, you'll see this file basically sets up the whole application. </li>
+<li>Look inside initMvc(). You'll see the Module\Manager is initialised before the front controller. Basically this Module\Manager::init() method finds all modules from newton.yaml, adds the modules to the FrontController, sets the controller directories and then runs the Module::init() on the modules Module.php file.</li>
+<li>Open up code/modules/local/ExampleModule/Module.php</li>
+<li>You'll see in here I hook into the content.types.init event. This event is thrown by NewtonContent\Model\TypeManager::init(). This is so we can add ContentTypes to the NewtonContent module without modifying any code.</li>
+</ul>
+<p>Documentation is still being created. Please email me at stuart@gravitywell.co.uk with any questions.</p>
+
+<p>&nbsp;</p>
+
+<h2>Events</h2>
+<ul>
+<li>front.init</li>
+<li>front.dispatch_before</li>
+<li>front.dispatch_after</li>
+<li>site.load_after</li>
+<li>lang.load_after</li>
+<li>module.loaded.{ModuleName}</li>
+</ul>
+<h2>View Scripts</h2>
+<p>All layouts can be found public/themes/_themename_/_frontendname_/_layouts/<br />
+  All viewscripts can be found in public/themes/_themename_/_frontendname_/_template</p>
+</body>
+</html>

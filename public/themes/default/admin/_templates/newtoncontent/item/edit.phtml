@@ -1,0 +1,84 @@
+
+<!-- jQuery form validation -->
+<script type="text/javascript">
+	// jQuery form validation
+	$().ready(function() {
+		var validationRules = eval(<?= $this->jsonValidation ?>);
+		// validate content form on keyup and submit
+		$("#Content").validate({
+			rules: validationRules,
+		    errorClass:'help-inline',
+		    validClass:'success',
+		    errorElement:'span',
+		    highlight: function (element, errorClass, validClass) { 
+		    	$(element).wrap("<div class='control-group error'>");
+		        $(element).parents("div[class='clearfix']").addClass(errorClass).removeClass(validClass); 
+		    }, 
+		    unhighlight: function (element, errorClass, validClass) { 
+		        $(element).parents(".error").removeClass(errorClass).addClass(validClass); 
+		    }				
+		});
+	});
+</script>
+
+
+<div class="page-header">
+    <h1><?php echo $this->pageTitle ?>
+		<small><?php echo $this->type->getLabel() ?></small>
+    </h1>
+</div>
+
+<div class="tabbable">
+
+	<ul class="nav nav-tabs">
+		<li class="dropdown" id="content-tab">
+			<a href="#" class="dropdown-toggle" data-toggle="dropdown">Content <b class="caret"></b></a>
+			<ul id="content-tabs" class="dropdown-menu">
+
+				
+			</ul>
+		</li>
+		<li class="pull-right"><a href="#tab-page-settings" data-Toggle="tab">Page Settings</a></li>
+		<?php if($this->type->getUrlRewritesEnabled()) : ?>
+			<li class="pull-right"><a href="#tab-url" data-Toggle="tab">Url Rewrites</a></li>
+		<?php endif; ?>
+		
+	</ul>
+
+
+	<div class="tab-content">
+		<div class="tab-pane top-level-tab" id="tab-content">
+
+			<div class="tabbable">
+				
+				<div class="tab-content">
+					<div class="tab-pane active" id="content">		
+						<div id="formWrapper" class="">
+							<?php echo $this->form; ?>
+						</div>
+					</div>	
+				</div>
+			</div>
+
+		</div>
+			
+		<div class="tab-pane top-level-tab" id="tab-url">
+			<?php echo $this->urlForm; ?>
+		</div>
+
+		<div class="tab-pane top-level-tab" id="tab-page-settings">
+			<?php echo $this->pageSettingsForm; ?>
+		</div>
+
+	</div>
+</div>
+
+<script>	
+
+	// Enable Facebook token tags
+    $(document).ready(function() {
+        
+        newton.tabs.setupFromFieldsets();
+    });   	
+
+</script>

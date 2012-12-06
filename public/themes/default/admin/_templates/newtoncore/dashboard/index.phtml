@@ -1,0 +1,48 @@
+<div class="page-header">
+    <h1>Welcome to your Dashboard
+    </h1>
+</div>
+
+<div class="row-fluid">
+    <div class="span6">
+
+        <div class="well">
+            <h2>Manage Files</h2>
+
+            <p>Head over to the file management section and edit files and images that appear on your website.</p>
+
+            <div class="btn-group">
+                <a class="btn btn-primary" href="<?php echo URL::route(array('controller' => 'files'), 'admin.core')?>">Manage Files &nbsp; <i class="icon-edit icon-white"></i></a>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="span6 well">
+        <h2>System Alerts</h2>
+        <p style="margin-bottom: 0;">Any alerts to the configuration of the CMS will be shown below</p>
+    </div>
+
+    <div class="span6">
+        <?php if($this->alertCount > 0) : ?>
+        <?php foreach($this->alerts as $alert) : ?>
+            <div class="alert alert-error">
+                <?php echo $alert; ?>
+            </div>
+
+        <?php endforeach; ?>
+            
+        <?php else : ?>
+        <div class="alert alert-success">
+            <strong>Congratulations!</strong> - No system alerts were found.
+        </div>
+        <?php endif; ?>
+    </div>
+
+</div>
+
+<style type="text/css">
+    .well h2 {margin-bottom: 10px; }
+    .well .btn-group { margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd; }
+</style>

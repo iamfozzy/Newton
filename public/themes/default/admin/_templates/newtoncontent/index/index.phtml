@@ -1,0 +1,42 @@
+
+<div class="page-header">
+    
+    <div class="btn-group pull-right">
+        <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-pencil icon-white"></i> Create New Content</a>
+        <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <?php foreach(TypeManager::getInstance()->getTypes() as $type) : ?>
+            <?php if($type->getIsPage()) continue; ?>
+            <?php $url = URL::route(array(
+                'controller'    => 'item',
+                'action'        => 'add',
+                'type'          => $type->getName()
+            )); ?>
+            <li><a href="<?php echo $url?>"><?php echo $type->getLabel() ?></a></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+
+<h1>Content <small>Choose the type of content you wish to edit</small></h1>
+
+</div>
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Content Type</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php foreach(TypeManager::getInstance()->getTypes() as $type) : ?>
+    <?php if($type->getIsPage()) continue; ?>
+    <?php if(!$type->getIsVisibleInContentList()) { continue; } ?>
+    <?php $a = URL::route(array('controller' => 'item', 'action' => 'index', 'type'  => $type->getName())); ?>
+    <tr>
+      <td><a href="<?php echo $a; ?>"><?php echo $type->getLabel(); ?></a></td>
+      <td><td>
+    </tr>
+    <?php endforeach; ?>
+  </tbody>
+</table>

@@ -1,0 +1,32 @@
+production:
+    alias:
+        Newton:             \Newton\Kernel
+        Asset:              \Newton\Asset
+        Cache:              \Newton\Cache
+        Config:             \Newton\Config
+        Event:              \Newton\Event
+        File:               \Newton\File
+        HTML:               \Newton\HTML
+        IoC:                \Newton\IoC
+        Inflector:          \Newton\Filter\Inflector
+        Log:                \Newton\Log
+        Redirect:           \Newton\Redirect
+        Request:            \Newton\Request
+        Response:           \Newton\Response
+        Section:            \Newton\Section
+        Session:            \Newton\Session
+        Str:                \Newton\Str
+        URI:                \Newton\URI
+        URL:                \Newton\URL
+        Settings:           \NewtonCore\Model\Settings
+        Site:               \NewtonCore\Model\Site
+        Lang:               \NewtonCore\Model\Lang
+        TypeManager:        \NewtonContent\Model\TypeManager
+        ContentItem:        \NewtonContent\Model\Item
+
+
+staging:
+    _extends: production
+
+development:
+    _extends: production
